@@ -45,7 +45,6 @@ class Api {
         });
     }
 
-
     createBoard(myKey, myToken, boardName) {
         const path = '/1/boards/';
         return this.request.post({
@@ -78,6 +77,62 @@ class Api {
                 token: myToken
             }
         });
+    }
+
+    createList(myKey, myToken, boardId, listName) {
+        const path = `/1/lists`;
+        return this.request.post({
+            url: `${this.host}${path}`,
+            qs: {
+                key: myKey,
+                token: myToken,
+                name: listName,
+                idBoard: boardId
+            }
+        });
+    }
+
+    createCard(myKey, myToken, listId, cardName) {
+        const path = `/1/cards`;
+        return this.request.post({
+            url: `${this.host}${path}`,
+            qs: {
+                key: myKey,
+                token: myToken,
+                name: cardName,
+                idList: listId
+            }
+        });
+    }
+
+    getCard(myKey, myToken, cardId) {
+        const path = `/1/cards/${cardId}`;
+        return this.request.get({
+            url: `${this.host}${path}`,
+            qs: {
+                key: myKey,
+                token: myToken
+            }
+        });
+    }
+
+    addCommentOnCard(myKey, myToken, cardId, comment) {
+        const path = `/1/cards/${cardId}/actions/comments`;
+        return this.request.post({
+            url: `${this.host}${path}`,
+            qs: {
+                key: myKey,
+                token: myToken,
+                text: comment
+            }
+        });
+    }
+
+    async deleteAllBoards(myKey, myToken) {
+        const allBoardsInfo = await this.getAllBoards(myKey, myToken);
+        for (let boardInfo of allBoardsInfo) {
+            await this.deleteBoard(myKey, myToken, boardInfo.id);
+        }
     }
 
 } module.exports = Api;

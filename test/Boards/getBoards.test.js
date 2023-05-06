@@ -1,5 +1,4 @@
 const Api = require('../../src/Resources/Api');
-const Data = require('../../src/Resources/Data');
 const { expect } = require('chai');
 const { faker } = require('@faker-js/faker');
 
@@ -9,7 +8,7 @@ describe('Get Boards api test suite', async() => {
 
     it('Verify user is able to get boards', async() => {
         // 1. Send api request to get all boards
-        const response = await api.getAllBoards(Data.myApiKey, Data.myToken);
+        const response = await api.getAllBoards(process.env.myApiKey, process.env.myToken);
 
         // 2. Verify api response is 200
         // console.log(response);
@@ -34,7 +33,7 @@ describe('Get Boards api test suite', async() => {
     it('Verify user get error for incorrect token', async() => {
         // 1. Send api request to get all boards
         try {
-            const response = await api.getAllBoards(Data.myApiKey, faker.finance.bitcoinAddress());
+            const response = await api.getAllBoards(process.env.myApiKey, faker.finance.bitcoinAddress());
         } catch (error) {
             // console.log(error);
             // 2. Verify api response is 401

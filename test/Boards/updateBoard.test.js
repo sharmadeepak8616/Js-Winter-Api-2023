@@ -1,7 +1,7 @@
 const Api = require('../../src/Resources/Api');
-const Data = require('../../src/Resources/Data');
 const { expect } = require('chai');
 const { faker } = require('@faker-js/faker');
+require('dotenv').config();
 
 let api = new Api();
 
@@ -15,7 +15,7 @@ describe('Update a Board api test suite', async() => {
         // set-up
         //  create a board (before ALL testcases)
         const boardName = faker.company.name();
-        const response =  await api.createBoard(Data.myApiKey, Data.myToken, boardName);
+        const response =  await api.createBoard(process.env.myApiKey, process.env.myToken, boardName);
         boardId = response.id;
         expect(response.name, 'Board name is not as expected').to.equal(boardName);
         expect(response.id.length > 0, 'Board id has length equals to zero').to.be.true;
@@ -25,14 +25,14 @@ describe('Update a Board api test suite', async() => {
         // runs before EVERY it-block in this describe-block
     })
         
-    it('Verify user can update a board', async() => {
+    it.only('Verify user can update a board', async() => {
         const newBoardName = faker.company.name();
-        const response = await api.updateBoard(Data.myApiKey, Data.myToken, boardId, 'name', newBoardName);
+        const response = await api.updateBoard(process.env.myApiKey, process.env.myToken, boardId, 'name', newBoardName);
 
         // verify name is same as newBoardName
         expect(response.name, 'Board name is not updated').to.equal(newBoardName);
 
-        const getBoardResponse = await api.getBoard(Data.myApiKey, Data.myToken, boardId);
+        const getBoardResponse = await api.getBoard(process.env.myApiKey, process.env.myToken, boardId);
         expect(getBoardResponse.name, 'Board name is not updated in Get-Board endpoint').to.equal(newBoardName);
 
     });
@@ -59,7 +59,7 @@ describe('Update a Board api test suite', async() => {
 
         // clean-up
         // delete the board (after ALL testcases)
-        await api.deleteBoard(Data.myApiKey, Data.myToken, boardId)
+        await api.deleteAllBoards(process.env.myApiKey, process.env.myToken, boardId)
     })
 
 
